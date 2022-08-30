@@ -1,4 +1,4 @@
-package com.xaqnus.hyper_x_backend.user.domain;
+package com.xaqnus.my_tube_backend.user.domain;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.xaqnus.hyper_x_backend.spring_security.filter;
+package com.xaqnus.my_tube_backend.spring_security.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

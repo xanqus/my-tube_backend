@@ -1,4 +1,4 @@
-package com.xaqnus.hyper_x_backend.spring_security.config.jwt;
+package com.xaqnus.my_tube_backend.spring_security.config.jwt;
 
 public interface JwtProperties {
     String SECRET = "xanqus"; // 우리 서버만 알고 있는 비밀값

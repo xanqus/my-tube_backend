@@ -1,6 +1,6 @@
-package com.xaqnus.hyper_x_backend.spring_security.auth;
+package com.xaqnus.my_tube_backend.spring_security.auth;
 
-import com.xaqnus.hyper_x_backend.user.domain.User;
+import com.xaqnus.my_tube_backend.user.domain.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

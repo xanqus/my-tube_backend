@@ -1,10 +1,10 @@
-package com.xaqnus.hyper_x_backend.spring_security.config.jwt;
+package com.xaqnus.my_tube_backend.spring_security.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xaqnus.hyper_x_backend.spring_security.auth.PrincipalDetails;
-import com.xaqnus.hyper_x_backend.user.domain.User;
+import com.xaqnus.my_tube_backend.spring_security.auth.PrincipalDetails;
+import com.xaqnus.my_tube_backend.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

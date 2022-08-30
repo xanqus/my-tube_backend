@@ -1,10 +1,10 @@
-package com.xaqnus.hyper_x_backend;
+package com.xaqnus.my_tube_backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HyperXBackendApplicationTests {
+class MyTubeBackendApplicationTests {
 
 	@Test
 	void contextLoads() {

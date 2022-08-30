@@ -11,7 +11,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/security-jwt?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/my-tube?serverTimezone=Asia/Seoul
     username: xanqus
     password: 1234
 

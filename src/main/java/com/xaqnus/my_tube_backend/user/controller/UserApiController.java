@@ -1,7 +1,7 @@
-package com.xaqnus.hyper_x_backend.user.controller;
+package com.xaqnus.my_tube_backend.user.controller;
 
-import com.xaqnus.hyper_x_backend.user.dao.UserRepository;
-import com.xaqnus.hyper_x_backend.user.domain.User;
+import com.xaqnus.my_tube_backend.user.dao.UserRepository;
+import com.xaqnus.my_tube_backend.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
