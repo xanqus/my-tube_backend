@@ -9,6 +9,10 @@ server:
       force: true
 
 spring:
+  servlet:
+    multipart:
+      maxFileSize: 1000MB
+      maxRequestSize: 1000MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/my-tube?serverTimezone=Asia/Seoul
