@@ -17,6 +17,7 @@ public class VideoController {
 
     @PostMapping("")
     public String uploadVideos(@RequestParam("files") List<MultipartFile> files) throws UnsupportedEncodingException {
+        System.out.println("files: " + files);
 
 
         String root = "C:\\uploadFiles";
