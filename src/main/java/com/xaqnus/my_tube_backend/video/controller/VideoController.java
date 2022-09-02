@@ -1,4 +1,4 @@
-package com.xaqnus.my_tube_backend.video;
+package com.xaqnus.my_tube_backend.video.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +16,9 @@ import java.util.*;
 public class VideoController {
 
     @PostMapping("")
-    public String uploadVideos(@RequestParam("files") List<MultipartFile> files) throws UnsupportedEncodingException {
+    public String uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("id") Integer id) throws UnsupportedEncodingException {
+        System.out.println("id: "+ id);
         System.out.println("files: " + files);
-
 
         String root = "C:\\uploadFiles";
         File fileCheck = new File(root);
@@ -28,7 +28,6 @@ public class VideoController {
             String originFile = files.get(i).getOriginalFilename();
             String ext = originFile.substring(originFile.lastIndexOf("."));
             String changeFile = UUID.randomUUID().toString() + ext;
-
 
             Map<String, String> map = new HashMap<>();
             map.put("originFile", originFile);
@@ -42,7 +41,6 @@ public class VideoController {
                 File uploadFile = new File(root + "\\" + fileList.get(i).get("changeFile"));
                 files.get(i).transferTo(uploadFile);
             }
-
             System.out.println("다중 파일 업로드 성공!");
 
         } catch (IllegalStateException | IOException e) {
@@ -52,11 +50,8 @@ public class VideoController {
                 new File(root + "\\" + fileList.get(i).get("changeFile")).delete();
             }
 
-
             e.printStackTrace();
         }
-
-
 
         return "동영상 업로드됨";
 
