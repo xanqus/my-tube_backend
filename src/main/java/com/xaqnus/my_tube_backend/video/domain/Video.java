@@ -1,5 +1,7 @@
 package com.xaqnus.my_tube_backend.video.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.xaqnus.my_tube_backend.user.domain.User;
 import lombok.Data;
 
@@ -29,6 +31,7 @@ public class Video {
     private Integer views;
 
     @ManyToOne
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private User user;
 
     private LocalDateTime regDate;
