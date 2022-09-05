@@ -23,11 +23,10 @@ public class VideoController {
     }
 
 
-    @PostMapping("/{userId}")
-    public String uploadVideos(@RequestParam("files") List<MultipartFile> files, @PathVariable("userId") Integer userId) throws UnsupportedEncodingException {
+    @PostMapping("")
+    public String uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("userId") Integer userId) throws UnsupportedEncodingException {
         System.out.println("id: "+ userId);
         System.out.println("files: " + files);
-
 
 
         String root = "C:\\uploadFiles";
