@@ -16,6 +16,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Date;
 
@@ -30,6 +31,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         setFilterProcessesUrl("/api/v1/login");
     }
     @Override
+    @Transactional
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         System.out.println("로그인 시도중");
         try {
@@ -39,7 +41,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             System.out.println(user);
 
             UsernamePasswordAuthenticationToken authenticationToken=
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 
             // PrincipalDetailsService의 loadUserByUsername() 함수가 실행된 후 정상이면 authentication이 리턴됨.
             // DB에 있는 username과 password가 일치한다
@@ -74,6 +76,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", principalDetails.getUser().getId())
                 .withClaim("username", principalDetails.getUser().getUsername())
+                .withClaim("email", principalDetails.getUser().getEmail())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         response.addHeader("Authorization", JwtProperties.TOKEN_PREFIX + jwtToken);
