@@ -31,6 +31,5 @@ public class VideoItem {
         userId = (int) video.getUser().getId();
         regDate = video.getRegDate();
         updatedDate = video.getUpdatedDate();
-
     }
 }
