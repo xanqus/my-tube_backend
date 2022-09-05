@@ -15,41 +15,40 @@ import java.util.List;
 @SpringBootTest
 class MyTubeBackendApplicationTests {
 
-	@Autowired
-	private VideoRepository videoRepository;
+    @Autowired
+    private VideoRepository videoRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
+    @Test
+    void contextLoads() {
+        for (int i = 0; i < 5; i++) {
+            User user = userRepository.findByUsername("user");
+            Video video = Video.builder()
+                    .videoName("요리 동영상")
+                    .videoUrl("http://localhost:8287/uploadFiles/d0f609cf-d2e1-427a-8e21-a16e21a54184.mp4")
+                    .isTemp(true)
+                    .isPublic(true)
+                    .views(0)
+                    .regDate(LocalDateTime.now())
+                    .updatedDate(LocalDateTime.now())
+                    .user(user).build();
+            videoRepository.save(video);
+        }
+    }
 
-	@Test
-	void contextLoads() {
-		for(int i = 0; i < 10; i++) {
-			User user = userRepository.findByUsername("user");
-			Video video = new Video();
-			video.setVideoName("요리 동영상");
-			video.setVideoUrl("http://localhost:8287/uploadFiles/d0f609cf-d2e1-427a-8e21-a16e21a54184.mp4");
-			video.setIsTemp(true);
-			video.setIsPublic(true);
-			video.setViews(0);
-			video.setRegDate(LocalDateTime.now());
-			video.setUpdatedDate(LocalDateTime.now());
-			video.setUser(user);
-			videoRepository.save(video);
-		}
-	}
+    @Test
+    User getUser(Long userId) {
+        User user = userRepository.findById(userId).get();
+        return user;
+    }
 
-	@Test
-	User getUser(Long userId) {
-		User user = userRepository.findById(userId).get();
-		return user;
-	}
-
-	@Test
-	List<Video> getVideos() {
-		List<Video> videos = videoRepository.findAllByUser(getUser(1L));
-		return videos;
-	}
+    @Test
+    List<Video> getVideos() {
+        List<Video> videos = videoRepository.findAllByUser(getUser(1L));
+        return videos;
+    }
 
 }

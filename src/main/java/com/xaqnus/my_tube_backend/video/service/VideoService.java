@@ -19,6 +19,7 @@ public class VideoService {
     public List<Video> getVideos(Integer userId) {
         User user = userRepository.findById(Long.valueOf(userId)).get();
         List<Video> videos = videoRepository.findAllByUser(user);
+
         return videos;
     }
 }
