@@ -29,6 +29,7 @@ class MyTubeBackendApplicationTests {
             Video video = Video.builder()
                     .videoName("요리 동영상")
                     .videoUrl("http://localhost:8287/uploadFiles/d0f609cf-d2e1-427a-8e21-a16e21a54184.mp4")
+                    .thumbnailUrl("https://blog.kakaocdn.net/dn/m07x9/btqSLGu0ccF/WuCwiJPrNKx9IB3xpER7C1/img.png")
                     .isTemp(true)
                     .isPublic(true)
                     .views(0)

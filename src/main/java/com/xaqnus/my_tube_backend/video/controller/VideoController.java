@@ -1,6 +1,6 @@
 package com.xaqnus.my_tube_backend.video.controller;
 
-import com.xaqnus.my_tube_backend.video.domain.Video;
+import com.xaqnus.my_tube_backend.video.dto.VideoItem;
 import com.xaqnus.my_tube_backend.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class VideoController {
     private final VideoService videoService;
 
     @GetMapping("")
-    public List<Video> getVideos(@RequestParam("userId") Integer userId) {
+    public List<VideoItem> getVideos(@RequestParam("userId") Integer userId) {
         return videoService.getVideos(userId);
     }
 
