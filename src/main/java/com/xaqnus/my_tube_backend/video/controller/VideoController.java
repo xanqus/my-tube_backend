@@ -1,9 +1,6 @@
 package com.xaqnus.my_tube_backend.video.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -12,11 +9,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/v1/videos")
+@RequestMapping("/api/v1/video")
 public class VideoController {
 
-    @PostMapping("")
-    public String uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("id") Integer id) throws UnsupportedEncodingException {
+    @PostMapping("/{id}")
+    public String uploadVideos(@RequestParam("files") List<MultipartFile> files, @PathVariable("id") Integer id) throws UnsupportedEncodingException {
         System.out.println("id: "+ id);
         System.out.println("files: " + files);
 
