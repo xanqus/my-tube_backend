@@ -20,6 +20,8 @@ public class VideoController {
         System.out.println("id: "+ id);
         System.out.println("files: " + files);
 
+
+
         String root = "C:\\uploadFiles";
         File fileCheck = new File(root);
         if(!fileCheck.exists()) fileCheck.mkdirs();
@@ -36,10 +38,12 @@ public class VideoController {
             fileList.add(map);
         }
         System.out.println(fileList);
+
         try {
             for(int i = 0; i < files.size(); i++) {
                 File uploadFile = new File(root + "\\" + fileList.get(i).get("changeFile"));
                 files.get(i).transferTo(uploadFile);
+                System.out.println("changeFile: " + fileList.get(i).get("changeFile"));
             }
             System.out.println("다중 파일 업로드 성공!");
 
