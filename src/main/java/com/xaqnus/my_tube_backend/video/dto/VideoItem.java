@@ -17,6 +17,8 @@ public class VideoItem {
     private Boolean isTemp;
     private Boolean isPublic;
     private Integer views;
+
+    private Integer likeCount;
     private Integer userId;
     private LocalDateTime regDate;
     private LocalDateTime updatedDate;
@@ -28,6 +30,7 @@ public class VideoItem {
         isTemp = video.getIsTemp();
         isPublic = video.getIsPublic();
         views = video.getViews();
+        likeCount = video.getLikeCount();
         userId = (int) video.getUser().getId();
         regDate = video.getRegDate();
         updatedDate = video.getUpdatedDate();
