@@ -39,6 +39,9 @@ public class Video {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private Integer views;
 
+    @Column(columnDefinition = "integer default 0", nullable=false)
+    private Integer likeCount;
+
     @ManyToOne(optional = false)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private User user;
