@@ -41,6 +41,7 @@ public class VideoService {
         for(int i = 0; i < files.size(); i++) {
             String originalFilename = files.get(i).getOriginalFilename();
             String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String originalFilenameForSave = originalFilename.substring(0, originalFilename.lastIndexOf("."));
             String changedFileName = UUID.randomUUID().toString() + ext;
 
             Map<String, String> map = new HashMap<>();
@@ -50,7 +51,8 @@ public class VideoService {
 
             Video video = Video.builder()
                     .user(user)
-                    .videoUrl("http://localhost:8287/uploadFiles/" + changedFileName).build();
+                    .videoUrl("http://localhost:8287/uploadFiles/" + changedFileName)
+                    .videoName(originalFilenameForSave).build();
             videoRepository.save(video);
         }
         System.out.println(fileList);
