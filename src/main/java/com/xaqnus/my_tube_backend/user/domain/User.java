@@ -25,6 +25,7 @@ public class User {
     private String password;
     private String roles;
 
+    @Transient
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Video> videoList;
 
