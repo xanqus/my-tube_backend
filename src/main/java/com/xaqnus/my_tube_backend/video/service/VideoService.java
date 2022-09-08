@@ -84,12 +84,12 @@ public class VideoService {
                 ImageIO.write(bufferedImage, "png", new File(imageFilepath));
 
             }
-            System.out.println("다중 파일 업로드 성공!");
+            System.out.println("파일 업로드 성공!");
 
 
 
         } catch (IllegalStateException | IOException e) {
-            System.out.println("다중 파일 업로드 실패 ㅠㅠ");
+            System.out.println("파일 업로드 실패");
             // 만약 업로드 실패하면 파일 삭제
             for(int i = 0; i < files.size(); i++) {
                 new File(root + "\\" + fileList.get(i).get("changeFile")).delete();
