@@ -12,8 +12,14 @@ import java.time.LocalDateTime;
 public class VideoItem {
     private long videoId;
     private String videoUrl;
+
     private String thumbnailUrl;
-    private String videoName;
+    private String title;
+
+    private String filename;
+
+    private String description;
+
     private Boolean isTemp;
     private Boolean isPublic;
     private Integer views;
@@ -26,7 +32,10 @@ public class VideoItem {
     public VideoItem(Video video) {
         videoId = video.getId();
         videoUrl = video.getVideoUrl();
-        videoName = video.getVideoName();
+        title = video.getTitle();
+        filename = video.getFilename();
+        thumbnailUrl = video.getThumbnailUrl();
+        description = video.getDescription();
         isTemp = video.getIsTemp();
         isPublic = video.getIsPublic();
         views = video.getViews();

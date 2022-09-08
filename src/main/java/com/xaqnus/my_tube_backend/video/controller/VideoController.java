@@ -4,10 +4,11 @@ import com.xaqnus.my_tube_backend.fileSystem.FileSystemService;
 import com.xaqnus.my_tube_backend.video.dto.VideoItem;
 import com.xaqnus.my_tube_backend.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import org.jcodec.api.JCodecException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class VideoController {
 
 
     @PostMapping("")
-    public List<VideoItem> uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("userId") Integer userId) throws UnsupportedEncodingException {
+    public List<VideoItem> uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("userId") Integer userId) throws IOException, JCodecException {
         System.out.println("id: "+ userId);
         System.out.println("files: " + files);
 

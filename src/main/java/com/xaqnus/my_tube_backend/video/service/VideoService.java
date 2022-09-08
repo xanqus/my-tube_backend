@@ -6,9 +6,15 @@ import com.xaqnus.my_tube_backend.video.domain.Video;
 import com.xaqnus.my_tube_backend.video.dto.VideoItem;
 import com.xaqnus.my_tube_backend.video.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
+import org.jcodec.api.FrameGrab;
+import org.jcodec.api.JCodecException;
+import org.jcodec.common.model.Picture;
+import org.jcodec.scale.AWTUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -34,36 +40,53 @@ public class VideoService {
         return collect;
     }
 
-    public void uploadFiles(List<MultipartFile> files, String root, Integer userId) {
+    public void uploadFiles(List<MultipartFile> files, String root, Integer userId) throws JCodecException, IOException {
+
         User user = userRepository.findById(Long.valueOf(userId)).get();
 
         List<Map<String, String>> fileList = new ArrayList<>();
         for(int i = 0; i < files.size(); i++) {
+
             String originalFilename = files.get(i).getOriginalFilename();
             String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String originalFilenameForSave = originalFilename.substring(0, originalFilename.lastIndexOf("."));
+            String title = originalFilename.substring(0, originalFilename.lastIndexOf("."));
             String changedFileName = UUID.randomUUID().toString() + ext;
+            String thumbnailFileName = changedFileName.substring(0, changedFileName.lastIndexOf(".")) + ".png";
 
             Map<String, String> map = new HashMap<>();
             map.put("originFile", originalFilename);
             map.put("changeFile", changedFileName);
+            map.put("thumbnail", thumbnailFileName);
             fileList.add(map);
 
             Video video = Video.builder()
                     .user(user)
                     .videoUrl("http://localhost:8287/uploadFiles/" + changedFileName)
-                    .videoName(originalFilenameForSave).build();
+                    .title(title)
+                    .filename(originalFilename)
+                    .thumbnailUrl("http://localhost:8287/uploadFiles/" + thumbnailFileName)
+                    .build();
+
             videoRepository.save(video);
         }
-        System.out.println(fileList);
+
 
         try {
             for(int i = 0; i < files.size(); i++) {
-                File uploadFile = new File(root + "\\" + fileList.get(i).get("changeFile"));
+                String filepath = root + "\\" + fileList.get(i).get("changeFile");
+                String imageFilepath = root+ "\\" + fileList.get(i).get("thumbnail");
+
+                File uploadFile = new File(filepath);
                 files.get(i).transferTo(uploadFile);
-                System.out.println("changeFile: " + fileList.get(i).get("changeFile"));
+                Picture picture = FrameGrab.getFrameFromFile(uploadFile, 0);
+
+                BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+                ImageIO.write(bufferedImage, "png", new File(imageFilepath));
+
             }
             System.out.println("다중 파일 업로드 성공!");
+
+
 
         } catch (IllegalStateException | IOException e) {
             System.out.println("다중 파일 업로드 실패 ㅠㅠ");

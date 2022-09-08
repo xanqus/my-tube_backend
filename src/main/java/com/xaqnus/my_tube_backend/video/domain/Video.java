@@ -24,11 +24,17 @@ public class Video {
     @Column(length = 255)
     private String videoUrl;
 
-    @Column(length= 255)
+    @Column(length= 255, nullable = false)
     private String thumbnailUrl;
 
     @Column(length = 50, nullable = false)
-    private String videoName;
+    private String title;
+
+    @Column(length = 255, nullable = false)
+    private String filename;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @Column(columnDefinition = "tinyint(1) default 1", nullable = false)
     private Boolean isTemp;
