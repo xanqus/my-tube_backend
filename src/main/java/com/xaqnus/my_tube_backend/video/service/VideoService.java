@@ -108,6 +108,9 @@ public class VideoService {
             if(video.getIsPublic() != null ){
                 videoToUpdate.setIsPublic(video.getIsPublic());
             }
+            if(video.getIsTemp()!=null) {
+                videoToUpdate.setIsTemp(video.getIsTemp());
+            }
             videoRepository.save(videoToUpdate);
         }
     }
