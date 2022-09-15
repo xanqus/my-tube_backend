@@ -1,6 +1,7 @@
 package com.xaqnus.my_tube_backend.video.controller;
 
 import com.xaqnus.my_tube_backend.fileSystem.FileSystemService;
+import com.xaqnus.my_tube_backend.video.domain.Video;
 import com.xaqnus.my_tube_backend.video.dto.VideoItem;
 import com.xaqnus.my_tube_backend.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +30,17 @@ public class VideoController {
         System.out.println("id: "+ userId);
         System.out.println("files: " + files);
 
-
         String root = "C:\\uploadFiles";
         fileSystemService.createFolder(root);
 
         videoService.uploadFiles(files, root, userId);
 
         return videoService.getVideos(userId);
+    }
+
+    @PatchMapping("/{id}")
+    public void updateVideo(@PathVariable("id") int id, @RequestBody Video video) {
+        videoService.updateVideo(id, video);
 
     }
 }

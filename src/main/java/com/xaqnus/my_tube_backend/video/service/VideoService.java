@@ -98,4 +98,17 @@ public class VideoService {
             e.printStackTrace();
         }
     }
+
+    public void updateVideo(int id, Video video) {
+        Optional<Video> opVideo = videoRepository.findById(Long.valueOf(id));
+        if(opVideo.isPresent()) {
+            Video videoToUpdate = opVideo.get();
+            videoToUpdate.setTitle(video.getTitle());
+            videoToUpdate.setDescription(video.getDescription());
+            if(video.getIsPublic() != null ){
+                videoToUpdate.setIsPublic(video.getIsPublic());
+            }
+            videoRepository.save(videoToUpdate);
+        }
+    }
 }
