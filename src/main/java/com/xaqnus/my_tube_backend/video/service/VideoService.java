@@ -99,8 +99,8 @@ public class VideoService {
         }
     }
 
-    public void updateVideo(int id, Video video) {
-        Optional<Video> opVideo = videoRepository.findById(Long.valueOf(id));
+    public void updateVideo(int videoId, Video video) {
+        Optional<Video> opVideo = videoRepository.findById(Long.valueOf(videoId));
         if(opVideo.isPresent()) {
             Video videoToUpdate = opVideo.get();
             videoToUpdate.setTitle(video.getTitle());
@@ -113,5 +113,14 @@ public class VideoService {
             }
             videoRepository.save(videoToUpdate);
         }
+    }
+
+    public VideoItem getVideo(Integer videoId) {
+        Optional<Video> video =  videoRepository.findById(Long.valueOf(videoId));
+        if(video.isPresent()) {
+            VideoItem videoItem = new VideoItem(video.get());
+            return videoItem;
+        }
+        return null;
     }
 }

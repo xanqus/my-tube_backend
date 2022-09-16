@@ -25,6 +25,11 @@ public class VideoController {
     }
 
 
+    @GetMapping("{videoId}")
+    public VideoItem getVideo(@PathVariable("videoId") Integer videoId) {
+        return videoService.getVideo(videoId);
+    }
+
     @PostMapping("")
     public List<VideoItem> uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("userId") Integer userId) throws IOException, JCodecException {
         System.out.println("id: "+ userId);
@@ -38,8 +43,8 @@ public class VideoController {
         return videoService.getVideos(userId);
     }
 
-    @PatchMapping("/{id}")
-    public void updateVideo(@PathVariable("id") int id, @RequestBody Video video) {
-        videoService.updateVideo(id, video);
+    @PatchMapping("/{videoId}")
+    public void updateVideo(@PathVariable("videoId") int videoId, @RequestBody Video video) {
+        videoService.updateVideo(videoId, video);
     }
 }
