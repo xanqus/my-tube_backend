@@ -1,4 +1,4 @@
-package com.xaqnus.my_tube_backend.fileSystem;
+package com.xaqnus.my_tube_backend.fileSystem.service;
 
 import org.springframework.stereotype.Service;
 

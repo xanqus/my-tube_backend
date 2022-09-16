@@ -1,6 +1,6 @@
 package com.xaqnus.my_tube_backend.video.controller;
 
-import com.xaqnus.my_tube_backend.fileSystem.FileSystemService;
+import com.xaqnus.my_tube_backend.fileSystem.service.FileSystemService;
 import com.xaqnus.my_tube_backend.video.domain.Video;
 import com.xaqnus.my_tube_backend.video.dto.VideoItem;
 import com.xaqnus.my_tube_backend.video.service.VideoService;
