@@ -115,7 +115,7 @@ public class VideoService {
         }
     }
 
-    public VideoItem getVideo(Integer videoId) {
+    public VideoItem getVideo(Long videoId) {
         Optional<Video> video =  videoRepository.findById(Long.valueOf(videoId));
         if(video.isPresent()) {
             VideoItem videoItem = new VideoItem(video.get());
