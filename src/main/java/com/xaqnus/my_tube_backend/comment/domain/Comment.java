@@ -1,8 +1,7 @@
 package com.xaqnus.my_tube_backend.comment.domain;
 
 import com.xaqnus.my_tube_backend.video.domain.Video;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -11,6 +10,8 @@ import javax.persistence.*;
 @Entity
 @Builder
 @DynamicInsert
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 public class Comment {
 
     @Id
