@@ -18,9 +18,12 @@ public class CommentDto {
 
     private Long likes;
 
+    private String userName;
+
     public CommentDto(Comment comment) {
         this.id = comment.getId();
         this.text = comment.getText();
         this.likes = comment.getLikes();
+        this.userName = comment.getUser().getUsername();
     }
 }

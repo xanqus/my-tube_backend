@@ -1,5 +1,6 @@
 package com.xaqnus.my_tube_backend.user.domain;
 
+import com.xaqnus.my_tube_backend.comment.domain.Comment;
 import com.xaqnus.my_tube_backend.video.domain.Video;
 import lombok.Data;
 
@@ -28,6 +29,9 @@ public class User {
     @Transient
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Video> videoList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList;
 
     public List<String> getRoleList() {
         if(this.roles.length() > 0 ) {

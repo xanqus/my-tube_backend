@@ -1,5 +1,6 @@
 package com.xaqnus.my_tube_backend.comment.domain;
 
+import com.xaqnus.my_tube_backend.user.domain.User;
 import com.xaqnus.my_tube_backend.video.domain.Video;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -26,4 +27,7 @@ public class Comment {
 
     @ManyToOne
     private Video video;
+
+    @ManyToOne
+    private User user;
 }
