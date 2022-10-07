@@ -36,3 +36,16 @@ logging:
         type:
           descriptor:
             sql: trace
+
+cloud:
+  aws:
+    credentials:
+      accessKey:
+      secretKey:
+    s3:
+      bucket: mytube-xanqus
+      dir: /
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
