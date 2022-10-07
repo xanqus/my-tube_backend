@@ -55,38 +55,25 @@ public class VideoService {
 
         User user = userRepository.findById(Long.valueOf(userId)).get();
 
-        List<Map<String, String>> fileList = new ArrayList<>();
-        for(int i = 0; i < files.size(); i++) {
-            String originalFilename = files.get(i).getOriginalFilename();
-            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String title = originalFilename.substring(0, originalFilename.lastIndexOf("."));
-            String changedFileName = UUID.randomUUID().toString() + ext;
-            String thumbnailFileName = changedFileName.substring(0, changedFileName.lastIndexOf(".")) + ".png";
-
-            Map<String, String> map = new HashMap<>();
-            map.put("originFile", originalFilename);
-            map.put("changeFile", changedFileName);
-            map.put("thumbnail", thumbnailFileName);
-            map.put("title", title);
-            fileList.add(map);
-        }
-
 
         AtomicInteger index = new AtomicInteger();
         try {
-            List<String> strArr = new ArrayList<>();
             files.stream()
                     .forEach(file -> {
-                        String s3FileName = fileList.get(index.intValue()).get("changeFile");
+                        String originalFilename = files.get(index.intValue()).getOriginalFilename();
+                        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+                        String title = originalFilename.substring(0, originalFilename.lastIndexOf("."));
+                        String changedFileName = UUID.randomUUID().toString() + ext;
+                        String thumbnailFileName = changedFileName.substring(0, changedFileName.lastIndexOf(".")) + ".png";
+
                         ObjectMetadata objMeta = new ObjectMetadata();
 
                         try {
                             objMeta.setContentLength(file.getInputStream().available());
-                            amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
-                            strArr.add(amazonS3.getUrl(bucket, s3FileName).toString());
+                            amazonS3.putObject(bucket, changedFileName, file.getInputStream(), objMeta);
 
-                            String filepath = root + "\\" + fileList.get(index.intValue()).get("changeFile");
-                            String imageFilepath = root+ "\\" + fileList.get(index.intValue()).get("thumbnail");
+                            String filepath = root + "\\" + changedFileName;
+                            String imageFilepath = root+ "\\" + thumbnailFileName;
 
                             File uploadFile = new File(filepath);
                             files.get(index.intValue()).transferTo(uploadFile);
@@ -95,19 +82,19 @@ public class VideoService {
                             BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
 
                             ImageIO.write(bufferedImage, "png", new File(imageFilepath));
-                            amazonS3.putObject(bucket, fileList.get(index.intValue()).get("thumbnail"), new File(imageFilepath));
+                            amazonS3.putObject(bucket, thumbnailFileName, new File(imageFilepath));
                             Video video = Video.builder()
                                     .user(user)
-                                    .videoUrl(amazonS3.getUrl(bucket, fileList.get(index.intValue()).get("changeFile")).toString())
-                                    .title(fileList.get(index.intValue()).get("title"))
-                                    .filename(fileList.get(index.intValue()).get("originFile"))
-                                    .thumbnailUrl(amazonS3.getUrl(bucket, fileList.get(index.intValue()).get("thumbnail")).toString())
+                                    .videoUrl(amazonS3.getUrl(bucket, changedFileName).toString())
+                                    .title(title)
+                                    .filename(originalFilename)
+                                    .thumbnailUrl(amazonS3.getUrl(bucket, thumbnailFileName).toString())
                                     .build();
 
                             videoRepository.save(video);
 
-                            new File(root + "\\" + fileList.get(index.intValue()).get("changeFile")).delete();
-                            new File(root + "\\" + fileList.get(index.intValue()).get("thumbnail")).delete();
+                            new File(root + "\\" + changedFileName).delete();
+                            new File(root + "\\" + thumbnailFileName).delete();
 
                         } catch (IOException e) {
                             throw new RuntimeException(e);
