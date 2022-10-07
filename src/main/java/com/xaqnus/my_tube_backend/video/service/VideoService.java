@@ -57,7 +57,6 @@ public class VideoService {
 
         List<Map<String, String>> fileList = new ArrayList<>();
         for(int i = 0; i < files.size(); i++) {
-
             String originalFilename = files.get(i).getOriginalFilename();
             String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
             String title = originalFilename.substring(0, originalFilename.lastIndexOf("."));
@@ -70,8 +69,6 @@ public class VideoService {
             map.put("thumbnail", thumbnailFileName);
             map.put("title", title);
             fileList.add(map);
-
-
         }
 
 
@@ -111,8 +108,6 @@ public class VideoService {
 
                             new File(root + "\\" + fileList.get(index.intValue()).get("changeFile")).delete();
                             new File(root + "\\" + fileList.get(index.intValue()).get("thumbnail")).delete();
-
-
 
                         } catch (IOException e) {
                             throw new RuntimeException(e);

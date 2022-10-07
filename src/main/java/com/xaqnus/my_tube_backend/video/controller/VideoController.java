@@ -34,8 +34,8 @@ public class VideoController {
         System.out.println("id: "+ userId);
         System.out.println("files: " + files);
 
-//        String root = "C:\\uploadFiles";
-//        fileSystemService.createFolder(root);
+        String root = "C:\\uploadFiles";
+        fileSystemService.createFolder(root);
 
         videoService.uploadFiles(files, userId);
 
