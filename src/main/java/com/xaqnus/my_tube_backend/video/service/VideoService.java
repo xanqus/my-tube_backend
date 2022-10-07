@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
 import com.xaqnus.my_tube_backend.user.domain.User;
 import com.xaqnus.my_tube_backend.video.domain.Video;
-import com.xaqnus.my_tube_backend.video.dto.VideoItem;
+import com.xaqnus.my_tube_backend.video.dto.VideoDto;
 import com.xaqnus.my_tube_backend.video.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.jcodec.api.FrameGrab;
@@ -38,12 +38,12 @@ public class VideoService {
     private final AmazonS3 amazonS3;
 
     String root = "C:\\uploadFiles";
-    public List<VideoItem> getVideos(Integer userId) {
+    public List<VideoDto> getVideos(Integer userId) {
         User user = userRepository.findById(Long.valueOf(userId)).get();
         List<Video> videos = videoRepository.findAllByUser(user);
-        List<VideoItem> collect = videos.stream()
+        List<VideoDto> collect = videos.stream()
                 .map(video -> {
-                    VideoItem item = new VideoItem(video);
+                    VideoDto item = new VideoDto(video);
                     return item;
                 })
                 .collect(Collectors.toList());
@@ -88,55 +88,47 @@ public class VideoService {
                             amazonS3.putObject(bucket, s3FileName, file.getInputStream(), objMeta);
                             strArr.add(amazonS3.getUrl(bucket, s3FileName).toString());
 
-//                            Picture picture = FrameGrab.getFrameFromFile(
-//                                    new File(String.valueOf(file)), 0);
-//                            amazonS3.putObject(bucket, "thumbnail", String.valueOf(picture));
+                            String filepath = root + "\\" + fileList.get(index.intValue()).get("changeFile");
+                            String imageFilepath = root+ "\\" + fileList.get(index.intValue()).get("thumbnail");
+
+                            File uploadFile = new File(filepath);
+                            files.get(index.intValue()).transferTo(uploadFile);
+                            Picture picture = FrameGrab.getFrameFromFile(uploadFile, 0);
+
+                            BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+
+                            ImageIO.write(bufferedImage, "png", new File(imageFilepath));
+                            amazonS3.putObject(bucket, fileList.get(index.intValue()).get("thumbnail"), new File(imageFilepath));
+                            Video video = Video.builder()
+                                    .user(user)
+                                    .videoUrl(amazonS3.getUrl(bucket, fileList.get(index.intValue()).get("changeFile")).toString())
+                                    .title(fileList.get(index.intValue()).get("title"))
+                                    .filename(fileList.get(index.intValue()).get("originFile"))
+                                    .thumbnailUrl(amazonS3.getUrl(bucket, fileList.get(index.intValue()).get("thumbnail")).toString())
+                                    .build();
+
+                            videoRepository.save(video);
+
+                            new File(root + "\\" + fileList.get(index.intValue()).get("changeFile")).delete();
+                            new File(root + "\\" + fileList.get(index.intValue()).get("thumbnail")).delete();
 
 
 
                         } catch (IOException e) {
                             throw new RuntimeException(e);
+                        } catch (JCodecException e) {
+                            throw new RuntimeException(e);
                         }
+
                         index.getAndIncrement();
                     });
 
-            for(int i = 0; i < files.size(); i++) {
-                String filepath = root + "\\" + fileList.get(i).get("changeFile");
-                String imageFilepath = root+ "\\" + fileList.get(i).get("thumbnail");
 
-                File uploadFile = new File(filepath);
-                files.get(i).transferTo(uploadFile);
-                Picture picture = FrameGrab.getFrameFromFile(uploadFile, 0);
-
-                BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
-
-                ImageIO.write(bufferedImage, "png", new File(imageFilepath));
-                amazonS3.putObject(bucket, fileList.get(i).get("thumbnail"), new File(imageFilepath));
-                Video video = Video.builder()
-                        .user(user)
-                        .videoUrl(amazonS3.getUrl(bucket, fileList.get(i).get("changeFile")).toString())
-                        .title(fileList.get(i).get("title"))
-                        .filename(fileList.get(i).get("originFile"))
-                        .thumbnailUrl(amazonS3.getUrl(bucket, fileList.get(i).get("thumbnail")).toString())
-                        .build();
-
-                videoRepository.save(video);
-
-            }
-            for(int i = 0; i < files.size(); i++) {
-                new File(root + "\\" + fileList.get(i).get("changeFile")).delete();
-                new File(root + "\\" + fileList.get(i).get("thumbnail")).delete();
-            }
             System.out.println("파일 업로드 성공!");
-
 
 
         } catch (IllegalStateException e) {
             System.out.println("파일 업로드 실패");
-            // 만약 업로드 실패하면 파일 삭제
-//            for(int i = 0; i < files.size(); i++) {
-//                new File(root + "\\" + fileList.get(i).get("changeFile")).delete();
-//            }
 
             e.printStackTrace();
         }
@@ -158,10 +150,10 @@ public class VideoService {
         }
     }
 
-    public VideoItem getVideo(Long videoId) {
+    public VideoDto getVideo(Long videoId) {
         Optional<Video> video =  videoRepository.findById(Long.valueOf(videoId));
         if(video.isPresent()) {
-            VideoItem videoItem = new VideoItem(video.get());
+            VideoDto videoItem = new VideoDto(video.get());
             return videoItem;
         }
         return null;

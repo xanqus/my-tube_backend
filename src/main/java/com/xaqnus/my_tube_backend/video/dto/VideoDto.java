@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-public class VideoItem {
+public class VideoDto {
     private long videoId;
     private String videoUrl;
 
@@ -29,7 +29,7 @@ public class VideoItem {
     private LocalDateTime regDate;
     private LocalDateTime updatedDate;
 
-    public VideoItem(Video video) {
+    public VideoDto(Video video) {
         videoId = video.getId();
         videoUrl = video.getVideoUrl();
         title = video.getTitle();
