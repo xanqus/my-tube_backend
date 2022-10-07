@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,12 +75,12 @@ public class VideoService {
         }
 
 
+        AtomicInteger index = new AtomicInteger();
         try {
             List<String> strArr = new ArrayList<>();
             files.stream()
                     .forEach(file -> {
-                        String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
+                        String s3FileName = fileList.get(index.intValue()).get("changeFile");
                         ObjectMetadata objMeta = new ObjectMetadata();
 
                         try {
@@ -96,6 +97,7 @@ public class VideoService {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
+                        index.getAndIncrement();
                     });
 
             for(int i = 0; i < files.size(); i++) {
@@ -112,10 +114,10 @@ public class VideoService {
                 amazonS3.putObject(bucket, fileList.get(i).get("thumbnail"), new File(imageFilepath));
                 Video video = Video.builder()
                         .user(user)
-                        .videoUrl((amazonS3.getUrl(bucket, fileList.get(i).get("changeFile"))).toString())
+                        .videoUrl(amazonS3.getUrl(bucket, fileList.get(i).get("changeFile")).toString())
                         .title(fileList.get(i).get("title"))
                         .filename(fileList.get(i).get("originFile"))
-                        .thumbnailUrl((amazonS3.getUrl(bucket, fileList.get(i).get("thumbnail"))).toString())
+                        .thumbnailUrl(amazonS3.getUrl(bucket, fileList.get(i).get("thumbnail")).toString())
                         .build();
 
                 videoRepository.save(video);

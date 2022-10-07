@@ -40,8 +40,8 @@ logging:
 cloud:
   aws:
     credentials:
-      accessKey:
-      secretKey:
+      accessKey: AKIAXVDA3VFKKXBYGCKW
+      secretKey: 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
     s3:
       bucket: mytube-xanqus
       dir: /
