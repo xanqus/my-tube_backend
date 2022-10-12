@@ -26,12 +26,6 @@ public class User {
     private String password;
     private String roles;
 
-    @Transient
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Video> videoList;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Comment> commentList;
 
     public List<String> getRoleList() {
         if(this.roles.length() > 0 ) {
