@@ -2,6 +2,8 @@ package com.xaqnus.my_tube_backend.video.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.xaqnus.my_tube_backend.channel.dao.ChannelRepository;
+import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
 import com.xaqnus.my_tube_backend.user.domain.User;
 import com.xaqnus.my_tube_backend.video.domain.Video;
@@ -32,15 +34,17 @@ public class VideoService {
 
     private final VideoRepository videoRepository;
 
+    private final ChannelRepository channelRepository;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     private final AmazonS3 amazonS3;
 
     String root = "C:\\uploadFiles";
-    public List<VideoDto> getVideos(Integer userId) {
-        User user = userRepository.findById(Long.valueOf(userId)).get();
-        List<Video> videos = videoRepository.findAllByUser(user);
+    public List<VideoDto> getVideos(Long channelId) {
+        Channel channel = channelRepository.findById(channelId).get();
+        List<Video> videos = videoRepository.findAllByChannel(channel);
         List<VideoDto> collect = videos.stream()
                 .map(video -> {
                     VideoDto item = new VideoDto(video);
@@ -51,9 +55,9 @@ public class VideoService {
         return collect;
     }
 
-    public void uploadFiles(List<MultipartFile> files, Integer userId) throws JCodecException, IOException {
+    public void uploadFiles(List<MultipartFile> files, Long channelId) throws JCodecException, IOException {
 
-        User user = userRepository.findById(Long.valueOf(userId)).get();
+        Channel channel = channelRepository.findById(channelId).get();
 
 
         AtomicInteger index = new AtomicInteger();
@@ -84,7 +88,7 @@ public class VideoService {
                             ImageIO.write(bufferedImage, "png", new File(imageFilepath));
                             amazonS3.putObject(bucket, thumbnailFileName, new File(imageFilepath));
                             Video video = Video.builder()
-                                    .user(user)
+                                    .channel(channel)
                                     .videoUrl(amazonS3.getUrl(bucket, changedFileName).toString())
                                     .title(title)
                                     .filename(originalFilename)

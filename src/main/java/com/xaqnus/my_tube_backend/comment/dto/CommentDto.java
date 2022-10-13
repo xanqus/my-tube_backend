@@ -18,12 +18,15 @@ public class CommentDto {
 
     private Long likes;
 
-    private String userName;
+    private String channelName;
+
+    private String channelProfileImageUrl;
 
     public CommentDto(Comment comment) {
         this.id = comment.getId();
         this.text = comment.getText();
         this.likes = comment.getLikes();
-        this.userName = comment.getUser().getUsername();
+        this.channelName = comment.getChannel().getChannelName();
+        this.channelProfileImageUrl = comment.getChannel().getChannelProfileImageUrl();
     }
 }

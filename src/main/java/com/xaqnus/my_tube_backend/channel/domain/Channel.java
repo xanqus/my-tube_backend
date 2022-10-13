@@ -1,7 +1,6 @@
-package com.xaqnus.my_tube_backend.comment.domain;
+package com.xaqnus.my_tube_backend.channel.domain;
 
-import com.xaqnus.my_tube_backend.channel.domain.Channel;
-import com.xaqnus.my_tube_backend.video.domain.Video;
+import com.xaqnus.my_tube_backend.user.domain.User;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,25 +11,25 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @DynamicInsert
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-public class Comment {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class Channel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String text;
+    private String channelName;
 
-    @Column(columnDefinition = "integer default 0", nullable = false)
-    private Long likes;
+    private String channelProfileImageUrl;
 
-    @ManyToOne
-    private Video video;
+    private String channelBannerImageUrl;
 
     @ManyToOne
-    private Channel channel;
+    private User user;
+
+    @Column(columnDefinition = "tinyint(1) default 1", nullable = false)
+    private Boolean activateStatus;
 
     @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
     private LocalDateTime regDate;

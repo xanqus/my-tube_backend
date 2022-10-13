@@ -25,7 +25,7 @@ public class VideoDto {
     private Integer views;
 
     private Integer likeCount;
-    private Integer userId;
+    private Long channelId;
     private LocalDateTime regDate;
     private LocalDateTime updatedDate;
 
@@ -40,7 +40,7 @@ public class VideoDto {
         isPublic = video.getIsPublic();
         views = video.getViews();
         likeCount = video.getLikeCount();
-        userId = (int) video.getUser().getId();
+        channelId = video.getChannel().getId();
         regDate = video.getRegDate();
         updatedDate = video.getUpdatedDate();
     }

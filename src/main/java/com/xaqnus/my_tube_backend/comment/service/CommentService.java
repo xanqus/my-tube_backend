@@ -1,10 +1,11 @@
 package com.xaqnus.my_tube_backend.comment.service;
 
+import com.xaqnus.my_tube_backend.channel.dao.ChannelRepository;
+import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.comment.dao.CommentRepository;
 import com.xaqnus.my_tube_backend.comment.domain.Comment;
 import com.xaqnus.my_tube_backend.comment.dto.CommentDto;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
-import com.xaqnus.my_tube_backend.user.domain.User;
 import com.xaqnus.my_tube_backend.video.domain.Video;
 import com.xaqnus.my_tube_backend.video.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,17 @@ public class CommentService {
     private final VideoRepository videoRepository;
 
     private final UserRepository userRepository;
+
+    private final ChannelRepository channelRepository;
+
     public void create(Long videoId, String text) {
         Optional<Video> opVideo = videoRepository.findById(videoId);
 
-        User user = userRepository.findById(opVideo.get().getUser().getId()).get();
+        Channel channel = channelRepository.findById(opVideo.get().getChannel().getId()).get();
         if (opVideo.isPresent()) {
             Comment comment = Comment.builder()
                     .video(opVideo.get())
-                    .user(user)
+                    .channel(channel)
                     .text(text)
                     .build();
             commentRepository.save(comment);

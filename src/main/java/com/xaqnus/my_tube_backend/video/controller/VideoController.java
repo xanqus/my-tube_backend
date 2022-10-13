@@ -20,8 +20,8 @@ public class VideoController {
     private final FileSystemService fileSystemService;
 
     @GetMapping("")
-    public List<VideoDto> getVideos(@RequestParam("userId") Integer userId) {
-        return videoService.getVideos(userId);
+    public List<VideoDto> getVideos(@RequestParam("channelId") Long channelId) {
+        return videoService.getVideos(channelId);
     }
 
     @GetMapping("{videoId}")
@@ -30,16 +30,16 @@ public class VideoController {
     }
 
     @PostMapping("")
-    public List<VideoDto> uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("userId") Integer userId) throws IOException, JCodecException {
-        System.out.println("id: "+ userId);
+    public List<VideoDto> uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("channelId") Long channelId) throws IOException, JCodecException {
+
         System.out.println("files: " + files);
 
         String root = "C:\\uploadFiles";
         fileSystemService.createFolder(root);
 
-        videoService.uploadFiles(files, userId);
+        videoService.uploadFiles(files, channelId);
 
-        return videoService.getVideos(userId);
+        return videoService.getVideos(channelId);
     }
 
     @PatchMapping("/{videoId}")

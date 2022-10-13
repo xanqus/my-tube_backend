@@ -2,6 +2,7 @@ package com.xaqnus.my_tube_backend.video.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.comment.domain.Comment;
 import com.xaqnus.my_tube_backend.user.domain.User;
 import lombok.*;
@@ -52,7 +53,7 @@ public class Video {
 
     @ManyToOne(optional = false)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    private User user;
+    private Channel channel;
 
     @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
     private LocalDateTime regDate;
