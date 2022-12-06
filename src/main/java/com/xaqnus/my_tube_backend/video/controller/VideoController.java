@@ -24,7 +24,7 @@ public class VideoController {
         return videoService.getVideos(channelId);
     }
 
-    @GetMapping("{videoId}")
+    @GetMapping("/{videoId}")
     public VideoDto getVideo(@PathVariable("videoId") Long videoId) {
         return videoService.getVideo(videoId);
     }

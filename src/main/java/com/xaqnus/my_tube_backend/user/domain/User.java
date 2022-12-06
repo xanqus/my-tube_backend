@@ -1,8 +1,7 @@
 package com.xaqnus.my_tube_backend.user.domain;
 
-import com.xaqnus.my_tube_backend.comment.domain.Comment;
-import com.xaqnus.my_tube_backend.video.domain.Video;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
+@DynamicInsert
 public class User {
 
     @Id
