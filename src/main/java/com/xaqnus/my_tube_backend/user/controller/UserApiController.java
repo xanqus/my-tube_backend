@@ -26,7 +26,7 @@ public class UserApiController {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
         userRepository.save(user);
-        //channelService.create(user);
+        channelService.create(user);
 
         return "회원가입 완료";
     }

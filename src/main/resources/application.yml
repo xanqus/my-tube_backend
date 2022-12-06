@@ -8,10 +8,10 @@ server:
       force: true
 
 spring:
-  web:
-    resources:
-      static-locations:
-        - file:///C:\
+  #web:
+    #resources:
+      #static-locations:
+        #- file:///C:\
   servlet:
     multipart:
       maxFileSize: 1000MB
@@ -40,8 +40,8 @@ logging:
 cloud:
   aws:
     credentials:
-      accessKey: AKIAXVDA3VFKKXBYGCKW
-      secretKey: 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
+      accessKey: AKIAXVDA3VFKKFDGBFHP
+      secretKey: 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
     s3:
       bucket: mytube-xanqus
       dir: /
