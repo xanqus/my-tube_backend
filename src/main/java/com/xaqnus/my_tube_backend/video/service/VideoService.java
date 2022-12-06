@@ -4,8 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.xaqnus.my_tube_backend.channel.dao.ChannelRepository;
 import com.xaqnus.my_tube_backend.channel.domain.Channel;
+import com.xaqnus.my_tube_backend.channel.service.ChannelService;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
-import com.xaqnus.my_tube_backend.user.domain.User;
 import com.xaqnus.my_tube_backend.video.domain.Video;
 import com.xaqnus.my_tube_backend.video.dto.VideoDto;
 import com.xaqnus.my_tube_backend.video.repository.VideoRepository;
@@ -22,13 +22,17 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class VideoService {
+
+    private final ChannelService channelService;
 
     private final UserRepository userRepository;
 
@@ -143,5 +147,16 @@ public class VideoService {
             return videoItem;
         }
         return null;
+    }
+
+    public List<VideoDto> getVideosByChannelId(Long channelId) {
+        Channel channel = channelService.getChannelByChannelId(channelId);
+
+        List<Video> videos = videoRepository.findByChannelOrderByRegDateDesc(channel);
+        return videos.stream()
+                .map(video -> {
+                    VideoDto videoDto = new VideoDto(video);
+                    return videoDto;
+                }).toList();
     }
 }

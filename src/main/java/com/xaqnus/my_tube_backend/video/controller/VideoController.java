@@ -29,6 +29,11 @@ public class VideoController {
         return videoService.getVideo(videoId);
     }
 
+    @GetMapping("/channel/{channelId}")
+    public List<VideoDto> getVideosByChannelId(@PathVariable("channelId") Long channelId) {
+        return videoService.getVideosByChannelId(channelId);
+    }
+
     @PostMapping("")
     public List<VideoDto> uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("channelId") Long channelId) throws IOException, JCodecException {
 
@@ -46,6 +51,7 @@ public class VideoController {
     public void updateVideo(@PathVariable("videoId") int videoId, @RequestBody Video video) {
         videoService.updateVideo(videoId, video);
     }
+
 
 //    @PostMapping("/awstest")
 //    public List<String> upload(@RequestParam("video") List<MultipartFile> files) throws IOException, RuntimeException {

@@ -17,6 +17,10 @@ public class ChannelService {
     private final ChannelRepository channelRepository;
 
     private final UserService userService;
+
+    public Channel getChannelByChannelId(Long channelId) {
+        return channelRepository.findById(channelId).orElseThrow();
+    }
     public void create(User user) {
         Channel channel = Channel.builder()
                 .channelName(user.getUsername())
