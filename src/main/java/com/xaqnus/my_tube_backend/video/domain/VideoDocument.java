@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Document(indexName = "my-tube___video_type_1___v1")
+@Document(indexName = "my-tube___video_type_2___v1")
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class VideoDocument {
 
@@ -47,6 +47,12 @@ public class VideoDocument {
     @Field(value = "channel_id")
     private Long channelId;
 
+    @Field(value = "channel_name")
+    private String channelName;
+
+    @Field(value = "channel_profile_image_url")
+    private String channelProfileImageUrl;
+
     @Field(value = "reg_date")
     private LocalDateTime regDate;
 
@@ -66,6 +72,8 @@ public class VideoDocument {
                 .views(video.getViews())
                 .likeCount(video.getLikeCount())
                 .channelId(video.getChannel().getId())
+                .channelName(video.getChannel().getChannelName())
+                .channelProfileImageUrl(video.getChannel().getChannelProfileImageUrl())
                 .regDate(video.getRegDate())
                 .updatedDate(video.getUpdatedDate())
                 .build();
