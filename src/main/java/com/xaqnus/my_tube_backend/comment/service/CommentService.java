@@ -7,7 +7,7 @@ import com.xaqnus.my_tube_backend.comment.domain.Comment;
 import com.xaqnus.my_tube_backend.comment.dto.CommentDto;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
 import com.xaqnus.my_tube_backend.video.domain.Video;
-import com.xaqnus.my_tube_backend.video.repository.VideoRepository;
+import com.xaqnus.my_tube_backend.video.dao.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

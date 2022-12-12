@@ -6,9 +6,11 @@ import com.xaqnus.my_tube_backend.channel.dao.ChannelRepository;
 import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.channel.service.ChannelService;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
+import com.xaqnus.my_tube_backend.video.dao.VideoSearchRepository;
 import com.xaqnus.my_tube_backend.video.domain.Video;
+import com.xaqnus.my_tube_backend.video.domain.VideoDocument;
 import com.xaqnus.my_tube_backend.video.dto.VideoDto;
-import com.xaqnus.my_tube_backend.video.repository.VideoRepository;
+import com.xaqnus.my_tube_backend.video.dao.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
@@ -39,6 +41,8 @@ public class VideoService {
     private final VideoRepository videoRepository;
 
     private final ChannelRepository channelRepository;
+
+    private final VideoSearchRepository videoSearchRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -158,5 +162,10 @@ public class VideoService {
                     VideoDto videoDto = new VideoDto(video);
                     return videoDto;
                 }).toList();
+    }
+
+    public List<VideoDocument> getVideosByTitleAndDescriptionMatch(String title, String description) {
+        List<VideoDocument> videoDocumentList = videoSearchRepository.findByNameOrDisplayNameOrDescription(title, description);
+        return videoDocumentList;
     }
 }

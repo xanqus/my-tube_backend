@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.jcodec:jcodec-javase:0.2.5'
 	implementation "com.amazonaws:aws-java-sdk-s3:1.12.316"
 	implementation group: 'com.auth0', name: 'java-jwt', version: '3.16.0'
+	implementation group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '4.3.10'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

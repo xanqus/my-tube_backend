@@ -1,4 +1,4 @@
-package com.xaqnus.my_tube_backend.video.repository;
+package com.xaqnus.my_tube_backend.video.dao;
 
 import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.video.domain.Video;

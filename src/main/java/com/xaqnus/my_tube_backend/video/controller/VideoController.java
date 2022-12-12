@@ -2,6 +2,7 @@ package com.xaqnus.my_tube_backend.video.controller;
 
 import com.xaqnus.my_tube_backend.fileSystem.service.FileSystemService;
 import com.xaqnus.my_tube_backend.video.domain.Video;
+import com.xaqnus.my_tube_backend.video.domain.VideoDocument;
 import com.xaqnus.my_tube_backend.video.dto.VideoDto;
 import com.xaqnus.my_tube_backend.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,11 @@ public class VideoController {
     @PatchMapping("/{videoId}")
     public void updateVideo(@PathVariable("videoId") int videoId, @RequestBody Video video) {
         videoService.updateVideo(videoId, video);
+    }
+
+    @GetMapping("/search")
+    public List<VideoDocument> getVideosSearchedByElasticsearch(@RequestParam("title")String title, @RequestParam("description")String description) {
+        return videoService.getVideosByTitleAndDescriptionMatch(title, description);
     }
 
 
