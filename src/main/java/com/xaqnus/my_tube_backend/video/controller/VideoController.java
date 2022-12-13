@@ -40,10 +40,18 @@ public class VideoController {
 
 //        System.out.println("files: " + files);
 //
-        String root = "C:\\uploadFiles";
+
+        String root = "";
+        String osName = System.getProperty("os.name");
+        if(osName.contains("linux")) {
+            root = "/uploadFiles";
+
+        } else if(osName.contains("Window")) {
+            root = "C:\\uploadFiles";
+        }
         fileSystemService.createFolder(root);
 
-        videoService.uploadFiles(files, channelId);
+        videoService.uploadFiles(files, channelId, root);
     }
 
     @PatchMapping("/{videoId}")
@@ -53,7 +61,7 @@ public class VideoController {
 
     @GetMapping("/search")
     public List<VideoDocument> getVideosSearchedByElasticsearch(@RequestParam("title")String title, @RequestParam("description")String description) {
-        System.out.println("os name: " + System.getProperty("os.name"));
+
         return videoService.getVideosByTitleAndDescriptionMatch(title, description);
     }
 

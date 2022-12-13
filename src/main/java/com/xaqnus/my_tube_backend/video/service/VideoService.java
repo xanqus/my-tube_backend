@@ -57,7 +57,7 @@ public class VideoService {
 
     private final AmazonS3 amazonS3;
 
-    String root = "C:\\uploadFiles";
+
     public List<VideoDto> getVideos(Long channelId) {
         Channel channel = channelRepository.findById(channelId).get();
         List<Video> videos = videoRepository.findAllByChannel(channel);
@@ -71,7 +71,7 @@ public class VideoService {
         return collect;
     }
 
-    public void uploadFiles(List<MultipartFile> files, Long channelId) throws JCodecException, IOException {
+    public void uploadFiles(List<MultipartFile> files, Long channelId, String root) throws JCodecException, IOException {
 
         Channel channel = channelRepository.findById(channelId).get();
 
