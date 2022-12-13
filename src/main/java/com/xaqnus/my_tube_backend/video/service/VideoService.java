@@ -57,8 +57,6 @@ public class VideoService {
         List<Video> videos = videoRepository.findAllByChannel(channel);
         List<VideoDto> collect = videos.stream()
                 .map(video -> {
-                    System.out.println("videoId: " + video.getId());
-                    System.out.println("video isTemp: " + video.getIsTemp());
                     VideoDto item = new VideoDto(video);
                     return item;
                 })

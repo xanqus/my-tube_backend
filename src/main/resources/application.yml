@@ -18,9 +18,9 @@ spring:
       maxRequestSize: 1000MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://hyper-x.kr:3307/my-tube?serverTimezone=Asia/Seoul
-    username: sbsst
-    password: sbs123414
+    url: jdbc:mysql://${db.host}:${db.port}/${db.database}?serverTimezone=Asia/Seoul
+    username: ${db.username}
+    password: ${db.password}
 
   jpa:
     hibernate:
@@ -40,16 +40,18 @@ logging:
 cloud:
   aws:
     credentials:
-      accessKey: AKIAXVDA3VFKBXX6ISGD
-      secretKey: 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
+      accessKey: ${aws.accessKey}
+      secretKey: ${aws.secretKey}
     s3:
-      bucket: mytube-xanqus
+      bucket: ${aws.bucket}
       dir: /
     region:
-      static: ap-northeast-2
+      static: ${aws.region}
     stack:
       auto: false
 
 elasticsearch:
-  host: hyper-x.kr
-  port: 9200
+  host: ${elasticsearch.host}
+  port: ${elasticsearch.port}
+  username: ${elasticsearch.username}
+  password: ${elasticsearch.password}
