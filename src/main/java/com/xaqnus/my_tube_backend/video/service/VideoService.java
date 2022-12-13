@@ -72,6 +72,7 @@ public class VideoService {
     }
 
     public void uploadFiles(List<MultipartFile> files, Long channelId, String root) throws JCodecException, IOException {
+        System.out.println("root: " + root);
 
         Channel channel = channelRepository.findById(channelId).get();
 
@@ -85,6 +86,9 @@ public class VideoService {
                         String title = originalFilename.substring(0, originalFilename.lastIndexOf("."));
                         String changedFileName = UUID.randomUUID().toString() + ext;
                         String thumbnailFileName = changedFileName.substring(0, changedFileName.lastIndexOf(".")) + ".png";
+                        String filepath = "";
+                        String imageFilepath = "";
+                        String osName = System.getProperty("os.name");
 
                         ObjectMetadata objMeta = new ObjectMetadata();
 
@@ -92,8 +96,16 @@ public class VideoService {
                             objMeta.setContentLength(file.getInputStream().available());
                             amazonS3.putObject(bucket, videoDir +changedFileName, file.getInputStream(), objMeta);
 
-                            String filepath = root + "\\" + changedFileName;
-                            String imageFilepath = root+ "\\" + thumbnailFileName;
+
+
+                            if(osName.contains("Window")) {
+                                filepath = root + "\\" + changedFileName;
+                                imageFilepath = root+ "\\" + thumbnailFileName;
+                            } else if(osName.contains("linux")) {
+                                filepath = root + "/" + changedFileName;
+                                imageFilepath = root+ "/" + thumbnailFileName;
+                            }
+
 
                             File uploadFile = new File(filepath);
                             files.get(index.intValue()).transferTo(uploadFile);
@@ -113,9 +125,13 @@ public class VideoService {
 
                             videoRepository.save(video);
 
-                            new File(root + "\\" + changedFileName).delete();
-                            new File(root + "\\" + thumbnailFileName).delete();
-
+                            if(osName.contains("Window")) {
+                                new File(root + "\\" + changedFileName).delete();
+                                new File(root + "\\" + thumbnailFileName).delete();
+                            } else if(osName.contains("linux")) {
+                                new File(root + "/" + changedFileName).delete();
+                                new File(root + "/" + thumbnailFileName).delete();
+                            }
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         } catch (JCodecException e) {
