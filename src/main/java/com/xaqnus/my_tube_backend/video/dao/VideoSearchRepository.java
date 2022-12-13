@@ -25,6 +25,14 @@ public interface VideoSearchRepository extends ElasticsearchRepository<VideoDocu
             "\n" +
             "    }\n" +
             "\n" +
-            "  }")
+            "}," +
+            "   \"sort\":[\n" +
+            "      {\n" +
+            "         \"updated_date\":{\n" +
+            "            \"order\":\"asc\", \"format\": \"strict_date_optional_time_nanos\"" +
+            "         }\n" +
+            "      }\n" +
+            "   ]\n"
+            )
     List<VideoDocument> findByNameOrDisplayNameOrDescription(String title, String description);
 }

@@ -6,11 +6,11 @@ import com.xaqnus.my_tube_backend.channel.dao.ChannelRepository;
 import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.channel.service.ChannelService;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
+import com.xaqnus.my_tube_backend.video.dao.VideoRepository;
 import com.xaqnus.my_tube_backend.video.dao.VideoSearchRepository;
 import com.xaqnus.my_tube_backend.video.domain.Video;
 import com.xaqnus.my_tube_backend.video.domain.VideoDocument;
 import com.xaqnus.my_tube_backend.video.dto.VideoDto;
-import com.xaqnus.my_tube_backend.video.dao.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,6 +45,7 @@ public class VideoService {
 
     private final VideoSearchRepository videoSearchRepository;
 
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
@@ -55,6 +57,8 @@ public class VideoService {
         List<Video> videos = videoRepository.findAllByChannel(channel);
         List<VideoDto> collect = videos.stream()
                 .map(video -> {
+                    System.out.println("videoId: " + video.getId());
+                    System.out.println("video isTemp: " + video.getIsTemp());
                     VideoDto item = new VideoDto(video);
                     return item;
                 })
@@ -134,6 +138,7 @@ public class VideoService {
             Video videoToUpdate = opVideo.get();
             videoToUpdate.setTitle(video.getTitle());
             videoToUpdate.setDescription(video.getDescription());
+            videoToUpdate.setUpdatedDate(LocalDateTime.now());
             if(video.getIsPublic() != null ){
                 videoToUpdate.setIsPublic(video.getIsPublic());
             }
@@ -165,6 +170,8 @@ public class VideoService {
     }
 
     public List<VideoDocument> getVideosByTitleAndDescriptionMatch(String title, String description) {
+
+
         List<VideoDocument> videoDocumentList = videoSearchRepository.findByNameOrDisplayNameOrDescription(title, description);
         return videoDocumentList;
     }

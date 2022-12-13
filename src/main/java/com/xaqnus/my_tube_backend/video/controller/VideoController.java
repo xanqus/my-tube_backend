@@ -36,7 +36,7 @@ public class VideoController {
     }
 
     @PostMapping("")
-    public List<VideoDto> uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("channelId") Long channelId) throws IOException, JCodecException {
+    public void uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("channelId") Long channelId) throws IOException, JCodecException {
 
         System.out.println("files: " + files);
 
@@ -44,8 +44,6 @@ public class VideoController {
         fileSystemService.createFolder(root);
 
         videoService.uploadFiles(files, channelId);
-
-        return videoService.getVideos(channelId);
     }
 
     @PatchMapping("/{videoId}")
