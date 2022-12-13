@@ -44,7 +44,8 @@ cloud:
       secretKey: ${aws.secretKey}
     s3:
       bucket: ${aws.bucket}
-      dir: /
+      videoDir: video/
+      thumbnailDir: thumbnails/
     region:
       static: ${aws.region}
     stack:

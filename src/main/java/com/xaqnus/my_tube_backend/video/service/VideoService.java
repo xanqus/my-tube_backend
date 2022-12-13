@@ -49,6 +49,12 @@ public class VideoService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    @Value("${cloud.aws.s3.videoDir}")
+    private String videoDir;
+
+    @Value("${cloud.aws.s3.thumbnailDir}")
+    private String thumbnailDir;
+
     private final AmazonS3 amazonS3;
 
     String root = "C:\\uploadFiles";
@@ -84,7 +90,7 @@ public class VideoService {
 
                         try {
                             objMeta.setContentLength(file.getInputStream().available());
-                            amazonS3.putObject(bucket, "videos/" +changedFileName, file.getInputStream(), objMeta);
+                            amazonS3.putObject(bucket, videoDir +changedFileName, file.getInputStream(), objMeta);
 
                             String filepath = root + "\\" + changedFileName;
                             String imageFilepath = root+ "\\" + thumbnailFileName;
@@ -96,13 +102,13 @@ public class VideoService {
                             BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
 
                             ImageIO.write(bufferedImage, "png", new File(imageFilepath));
-                            amazonS3.putObject(bucket, "thumbnails/" + thumbnailFileName, new File(imageFilepath));
+                            amazonS3.putObject(bucket, thumbnailDir + thumbnailFileName, new File(imageFilepath));
                             Video video = Video.builder()
                                     .channel(channel)
-                                    .videoUrl(amazonS3.getUrl(bucket, "videos/" + changedFileName).toString())
+                                    .videoUrl(amazonS3.getUrl(bucket, videoDir + changedFileName).toString())
                                     .title(title)
                                     .filename(originalFilename)
-                                    .thumbnailUrl(amazonS3.getUrl(bucket, "thumbnails/" + thumbnailFileName).toString())
+                                    .thumbnailUrl(amazonS3.getUrl(bucket, thumbnailDir + thumbnailFileName).toString())
                                     .build();
 
                             videoRepository.save(video);
