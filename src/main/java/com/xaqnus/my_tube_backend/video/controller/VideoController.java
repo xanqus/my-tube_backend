@@ -53,6 +53,7 @@ public class VideoController {
 
     @GetMapping("/search")
     public List<VideoDocument> getVideosSearchedByElasticsearch(@RequestParam("title")String title, @RequestParam("description")String description) {
+        System.out.println("os name: " + System.getProperty("os.name"));
         return videoService.getVideosByTitleAndDescriptionMatch(title, description);
     }
 
