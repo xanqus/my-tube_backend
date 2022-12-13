@@ -84,7 +84,7 @@ public class VideoService {
 
                         try {
                             objMeta.setContentLength(file.getInputStream().available());
-                            amazonS3.putObject(bucket, changedFileName, file.getInputStream(), objMeta);
+                            amazonS3.putObject(bucket, "videos/" +changedFileName, file.getInputStream(), objMeta);
 
                             String filepath = root + "\\" + changedFileName;
                             String imageFilepath = root+ "\\" + thumbnailFileName;
@@ -96,13 +96,13 @@ public class VideoService {
                             BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
 
                             ImageIO.write(bufferedImage, "png", new File(imageFilepath));
-                            amazonS3.putObject(bucket, thumbnailFileName, new File(imageFilepath));
+                            amazonS3.putObject(bucket, "thumbnails/" + thumbnailFileName, new File(imageFilepath));
                             Video video = Video.builder()
                                     .channel(channel)
-                                    .videoUrl(amazonS3.getUrl(bucket, changedFileName).toString())
+                                    .videoUrl(amazonS3.getUrl(bucket, "videos/" + changedFileName).toString())
                                     .title(title)
                                     .filename(originalFilename)
-                                    .thumbnailUrl(amazonS3.getUrl(bucket, thumbnailFileName).toString())
+                                    .thumbnailUrl(amazonS3.getUrl(bucket, "thumbnails/" + thumbnailFileName).toString())
                                     .build();
 
                             videoRepository.save(video);
