@@ -128,7 +128,7 @@ public class VideoService {
                             if(osName.contains("Window")) {
                                 new File(root + "\\" + changedFileName).delete();
                                 new File(root + "\\" + thumbnailFileName).delete();
-                            } else if(osName.contains("linux")) {
+                            } else if(osName.contains("Linux")) {
                                 new File(root + "/" + changedFileName).delete();
                                 new File(root + "/" + thumbnailFileName).delete();
                             }
