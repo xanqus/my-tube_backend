@@ -43,7 +43,8 @@ public class VideoController {
 
         String root = "";
         String osName = System.getProperty("os.name");
-        if(osName.contains("linux")) {
+
+        if(osName.contains("Linux")) {
             root = "/uploadFiles";
 
         } else if(osName.contains("Window")) {

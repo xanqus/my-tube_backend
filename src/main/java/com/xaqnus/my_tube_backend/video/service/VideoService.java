@@ -101,7 +101,7 @@ public class VideoService {
                             if(osName.contains("Window")) {
                                 filepath = root + "\\" + changedFileName;
                                 imageFilepath = root+ "\\" + thumbnailFileName;
-                            } else if(osName.contains("linux")) {
+                            } else if(osName.contains("Linux")) {
                                 filepath = root + "/" + changedFileName;
                                 imageFilepath = root+ "/" + thumbnailFileName;
                             }
