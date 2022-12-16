@@ -30,7 +30,7 @@ pipeline {
                   sh 'docker ps -f name=my-tube-backend -q | xargs --no-run-if-empty docker container stop'
                   sh 'docker container ls -a -f name=my-tube-backend -q | xargs -r docker container rm'
                   sh 'docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
-                  sh 'docker run -d --name my-tube-backend-dev -p 8091:8234 --net elk__1_default --restart unless-stopped my-tube-backend:latest'
+                  sh 'docker run -d --name my-tube-backend-dev -p 8091:8287 --net elk__1_default --restart unless-stopped my-tube-backend:latest'
               }
           }
     }
