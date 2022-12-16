@@ -38,7 +38,6 @@ public class VideoController {
     @PostMapping("")
     public void uploadVideos(@RequestParam("files") List<MultipartFile> files, @RequestParam("channelId") Long channelId) throws IOException, JCodecException {
 
-        System.out.println("web hook test4");
         String root = "";
         String osName = System.getProperty("os.name");
 
