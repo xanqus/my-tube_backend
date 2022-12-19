@@ -33,7 +33,7 @@ public class VideoController {
         System.out.println("비디오 조회");
         String ip = getRemoteAddr(request);
 
-        return videoService.getVideo(videoId, "61.98.31.98");
+        return videoService.getVideo(videoId, ip);
     }
 
     @GetMapping("/channel/{channelId}")

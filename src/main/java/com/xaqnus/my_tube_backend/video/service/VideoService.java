@@ -13,6 +13,7 @@ import com.xaqnus.my_tube_backend.video.domain.Video;
 import com.xaqnus.my_tube_backend.video.domain.VideoDocument;
 import com.xaqnus.my_tube_backend.video.dto.VideoDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
 import org.jcodec.common.model.Picture;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class VideoService {
 
     private final ChannelService channelService;
@@ -177,10 +179,10 @@ public class VideoService {
         Video video = videoRepository.findById(videoId).orElseThrow(() -> new IllegalArgumentException("id에 해당하는 video가 없습니다. 잘못된 입력"));
 
         if (redisService.isFirstIpRequest(ip, videoId)) {
-            System.out.println("first request");
+            log.debug("first request");
             increaseVideoViews(video, ip);
         }else {
-            System.out.println("same user requests duplicate in 24hours");
+            log.debug("same user requests duplicate in 24hours");
         }
 
         VideoDto videoItem = new VideoDto(video);
