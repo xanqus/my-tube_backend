@@ -10,8 +10,11 @@ import org.jcodec.api.JCodecException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+
+import static com.xaqnus.my_tube_backend.util.Util.getRemoteAddr;
 
 @RestController
 @RequestMapping("/api/v1/video")
@@ -26,7 +29,9 @@ public class VideoController {
     }
 
     @GetMapping("/{videoId}")
-    public VideoDto getVideo(@PathVariable("videoId") Long videoId) {
+    public VideoDto getVideo(@PathVariable("videoId") Long videoId, HttpServletRequest request) {
+        System.out.println("비디오 조회");
+        System.out.println(getRemoteAddr(request));
         return videoService.getVideo(videoId);
     }
 
