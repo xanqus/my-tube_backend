@@ -31,8 +31,9 @@ public class VideoController {
     @GetMapping("/{videoId}")
     public VideoDto getVideo(@PathVariable("videoId") Long videoId, HttpServletRequest request) {
         System.out.println("비디오 조회");
-        System.out.println(getRemoteAddr(request));
-        return videoService.getVideo(videoId);
+        String ip = getRemoteAddr(request);
+
+        return videoService.getVideo(videoId, "61.98.31.98");
     }
 
     @GetMapping("/channel/{channelId}")

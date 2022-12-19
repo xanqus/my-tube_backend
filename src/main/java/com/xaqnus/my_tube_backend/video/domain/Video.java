@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.comment.domain.Comment;
-import com.xaqnus.my_tube_backend.user.domain.User;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -63,4 +62,8 @@ public class Video {
 
     @OneToMany(mappedBy = "video", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
+
+    public void increaseViews() {
+        views += 1;
+    }
 }

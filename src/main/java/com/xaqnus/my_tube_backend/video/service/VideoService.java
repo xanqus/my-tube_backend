@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.xaqnus.my_tube_backend.channel.dao.ChannelRepository;
 import com.xaqnus.my_tube_backend.channel.domain.Channel;
 import com.xaqnus.my_tube_backend.channel.service.ChannelService;
+import com.xaqnus.my_tube_backend.redis.service.RedisService;
 import com.xaqnus.my_tube_backend.user.dao.UserRepository;
 import com.xaqnus.my_tube_backend.video.dao.VideoRepository;
 import com.xaqnus.my_tube_backend.video.dao.VideoSearchRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +46,8 @@ public class VideoService {
     private final ChannelRepository channelRepository;
 
     private final VideoSearchRepository videoSearchRepository;
+
+    private final RedisService redisService;
 
 
     @Value("${cloud.aws.s3.bucket}")
@@ -94,16 +98,15 @@ public class VideoService {
 
                         try {
                             objMeta.setContentLength(file.getInputStream().available());
-                            amazonS3.putObject(bucket, videoDir +changedFileName, file.getInputStream(), objMeta);
+                            amazonS3.putObject(bucket, videoDir + changedFileName, file.getInputStream(), objMeta);
 
 
-
-                            if(osName.contains("Window")) {
+                            if (osName.contains("Window")) {
                                 filepath = root + "\\" + changedFileName;
-                                imageFilepath = root+ "\\" + thumbnailFileName;
-                            } else if(osName.contains("Linux")) {
+                                imageFilepath = root + "\\" + thumbnailFileName;
+                            } else if (osName.contains("Linux")) {
                                 filepath = root + "/" + changedFileName;
-                                imageFilepath = root+ "/" + thumbnailFileName;
+                                imageFilepath = root + "/" + thumbnailFileName;
                             }
 
 
@@ -125,10 +128,10 @@ public class VideoService {
 
                             videoRepository.save(video);
 
-                            if(osName.contains("Window")) {
+                            if (osName.contains("Window")) {
                                 new File(root + "\\" + changedFileName).delete();
                                 new File(root + "\\" + thumbnailFileName).delete();
-                            } else if(osName.contains("Linux")) {
+                            } else if (osName.contains("Linux")) {
                                 new File(root + "/" + changedFileName).delete();
                                 new File(root + "/" + thumbnailFileName).delete();
                             }
@@ -154,28 +157,37 @@ public class VideoService {
 
     public void updateVideo(int videoId, Video video) {
         Optional<Video> opVideo = videoRepository.findById(Long.valueOf(videoId));
-        if(opVideo.isPresent()) {
+        if (opVideo.isPresent()) {
             Video videoToUpdate = opVideo.get();
             videoToUpdate.setTitle(video.getTitle());
             videoToUpdate.setDescription(video.getDescription());
             videoToUpdate.setUpdatedDate(LocalDateTime.now());
-            if(video.getIsPublic() != null ){
+            if (video.getIsPublic() != null) {
                 videoToUpdate.setIsPublic(video.getIsPublic());
             }
-            if(video.getIsTemp()!=null) {
+            if (video.getIsTemp() != null) {
                 videoToUpdate.setIsTemp(video.getIsTemp());
             }
             videoRepository.save(videoToUpdate);
         }
     }
 
-    public VideoDto getVideo(Long videoId) {
-        Optional<Video> video =  videoRepository.findById(Long.valueOf(videoId));
-        if(video.isPresent()) {
-            VideoDto videoItem = new VideoDto(video.get());
-            return videoItem;
+    @Transactional
+    public VideoDto getVideo(Long videoId, String ip) {
+        Video video = videoRepository.findById(videoId).orElseThrow(() -> new IllegalArgumentException("id에 해당하는 video가 없습니다. 잘못된 입력"));
+
+        if (redisService.isFirstIpRequest(ip, videoId)) {
+            System.out.println("first request");
+            increaseVideoViews(video, ip);
+        }else {
+            System.out.println("same user requests duplicate in 24hours");
         }
-        return null;
+
+        VideoDto videoItem = new VideoDto(video);
+
+
+        return videoItem;
+
     }
 
     public List<VideoDto> getVideosByChannelId(Long channelId) {
@@ -194,5 +206,10 @@ public class VideoService {
 
         List<VideoDocument> videoDocumentList = videoSearchRepository.findByNameOrDisplayNameOrDescription(title, description);
         return videoDocumentList;
+    }
+
+    private void increaseVideoViews(Video video, String ip) {
+        video.increaseViews();
+        redisService.writeClientRequest(ip, video.getId());
     }
 }
