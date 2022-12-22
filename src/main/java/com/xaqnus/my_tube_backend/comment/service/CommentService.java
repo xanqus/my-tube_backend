@@ -2,6 +2,7 @@ package com.xaqnus.my_tube_backend.comment.service;
 
 import com.xaqnus.my_tube_backend.channel.dao.ChannelRepository;
 import com.xaqnus.my_tube_backend.channel.domain.Channel;
+import com.xaqnus.my_tube_backend.channel.service.ChannelService;
 import com.xaqnus.my_tube_backend.comment.dao.CommentRepository;
 import com.xaqnus.my_tube_backend.comment.domain.Comment;
 import com.xaqnus.my_tube_backend.comment.dto.CommentDto;
@@ -24,12 +25,12 @@ public class CommentService {
 
     private final UserRepository userRepository;
 
-    private final ChannelRepository channelRepository;
+    private final ChannelService channelService;
 
-    public void create(Long videoId, String text) {
+    public void create(Long videoId, Long channelId, String text) {
         Optional<Video> opVideo = videoRepository.findById(videoId);
 
-        Channel channel = channelRepository.findById(opVideo.get().getChannel().getId()).get();
+        Channel channel = channelService.getChannelByChannelId(channelId);
         if (opVideo.isPresent()) {
             Comment comment = Comment.builder()
                     .video(opVideo.get())

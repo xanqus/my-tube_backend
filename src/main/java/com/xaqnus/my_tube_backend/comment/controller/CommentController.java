@@ -20,8 +20,8 @@ public class CommentController {
         return commentService.getComments(videoId);
     }
 
-    @PostMapping("/{videoId}")
-    public void createComment(@PathVariable Long videoId, @RequestBody Comment comment) {
-        commentService.create(videoId, comment.getText());
+    @PostMapping("/{videoId}/{channelId}")
+    public void createComment(@PathVariable Long videoId, @PathVariable Long channelId, @RequestBody Comment comment) {
+        commentService.create(videoId, channelId, comment.getText());
     }
 }

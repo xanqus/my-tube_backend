@@ -174,6 +174,10 @@ public class VideoService {
         }
     }
 
+
+    public Video getVideoByVideoId(Long videoId) {
+        return videoRepository.findById(videoId).orElseThrow();
+    }
     @Transactional
     public VideoDto getVideo(Long videoId, String ip) {
         Video video = videoRepository.findById(videoId).orElseThrow(() -> new IllegalArgumentException("id에 해당하는 video가 없습니다. 잘못된 입력"));
