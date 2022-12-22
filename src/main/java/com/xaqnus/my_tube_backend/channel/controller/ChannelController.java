@@ -19,7 +19,12 @@ public class ChannelController {
     private final ChannelService channelService;
 
     @GetMapping("/{username}")
-    public List<ChannelDto> getChannel(@PathVariable String username) {
+    public List<ChannelDto> getChannels(@PathVariable String username) {
         return channelService.getChannel(username);
+    }
+
+    @GetMapping("/detail/{channelId}")
+    public ChannelDto getChannelByChannelId(@PathVariable Long channelId) {
+        return channelService.getChannelDtoByChannelId(channelId);
     }
 }

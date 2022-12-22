@@ -18,6 +18,11 @@ public class ChannelService {
 
     private final UserService userService;
 
+    public ChannelDto getChannelDtoByChannelId(Long channelId) {
+        ChannelDto channelDto = new ChannelDto(getChannelByChannelId(channelId));
+        return channelDto;
+    }
+
     public Channel getChannelByChannelId(Long channelId) {
         return channelRepository.findById(channelId).orElseThrow();
     }
