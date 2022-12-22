@@ -14,6 +14,7 @@ public class SubscribedChannelListDto {
 
     private Long id;
 
+    @Builder.Default
     private List<Long> subscribedChannelIdList = new ArrayList<>();
 
     public void addSubscribedChannelId(Long subscribedChannelId) {
