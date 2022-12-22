@@ -1,12 +1,10 @@
 package com.xaqnus.my_tube_backend.subscribe.controller;
 
 
+import com.xaqnus.my_tube_backend.subscribe.dto.SubscribedChannelListDto;
 import com.xaqnus.my_tube_backend.subscribe.service.SubscribeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/subscribe")
@@ -14,6 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SubscribeController {
 
     private final SubscribeService subscribeService;
+
+    @GetMapping("/{channelId}")
+    public SubscribedChannelListDto getAllSubscribeChannel (@PathVariable Long channelId) {
+        return subscribeService.getAllSubscribeByChannelId(channelId);
+    }
 
     @PostMapping("/{channelId}/{subscribedChannelId}")
     public void subscribe(@PathVariable Long channelId, @PathVariable Long subscribedChannelId) {
