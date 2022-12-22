@@ -23,6 +23,12 @@ public class VideoController {
     private final VideoService videoService;
     private final FileSystemService fileSystemService;
 
+
+    @GetMapping("/all")
+    public List<VideoDto> getAllVideos() {
+        return videoService.getAllVideos();
+    }
+
     @GetMapping("")
     public List<VideoDto> getVideos(@RequestParam("channelId") Long channelId) {
         return videoService.getVideos(channelId);

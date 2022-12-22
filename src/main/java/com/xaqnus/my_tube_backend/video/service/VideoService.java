@@ -214,4 +214,14 @@ public class VideoService {
         video.increaseViews();
         redisService.writeClientRequest(ip, video.getId());
     }
+
+    public List<VideoDto> getAllVideos() {
+        List<Video> videoList = videoRepository.findAll();
+        return videoList.stream()
+                .map(video -> {
+                    VideoDto videoDto = new VideoDto(video);
+                    return videoDto;
+                }).collect(Collectors.toList());
+
+    }
 }

@@ -53,4 +53,9 @@ public class SubscribeService {
         return subscribedChannelListDto;
 
     }
+
+    public Long getCountOfSubscribers(Long channelId) {
+        Channel channel = channelService.getChannelByChannelId(channelId);
+        return subscribeRepository.countBySubscribedChannel(channel);
+    }
 }

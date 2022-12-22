@@ -13,4 +13,8 @@ public interface SubscribeRepository extends JpaRepository<Subscribe, Long> {
     void deleteByChannelAndSubscribedChannel(Channel channel, Channel subscribedChannel);
 
     List<Subscribe> findAllByChannel(Channel channel);
+
+    Long countByChannel(Channel channel);
+
+    Long countBySubscribedChannel(Channel channel);
 }

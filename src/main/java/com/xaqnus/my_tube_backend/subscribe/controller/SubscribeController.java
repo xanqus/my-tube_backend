@@ -28,5 +28,10 @@ public class SubscribeController {
 
     }
 
+    @GetMapping("/count/{channelId}")
+    public Long getCountOfSubscribers(@PathVariable Long channelId) {
+        return subscribeService.getCountOfSubscribers(channelId);
+    }
+
 
 }
