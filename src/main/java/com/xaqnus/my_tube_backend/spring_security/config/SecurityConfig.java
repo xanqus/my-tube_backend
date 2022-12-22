@@ -6,6 +6,7 @@ import com.xaqnus.my_tube_backend.user.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,6 +42,8 @@ public class SecurityConfig {
                         //권한설정
                         .authorizeRequests(authorize -> authorize
                                 .antMatchers("/api/v1/user/**")
+                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                                .antMatchers(HttpMethod.POST, "/api/v1/comment/**")
                                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
                                 .antMatchers("/api/v1/manager/**")
                                 .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")

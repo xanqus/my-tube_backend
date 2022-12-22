@@ -1,6 +1,7 @@
 package com.xaqnus.my_tube_backend.comment.controller;
 
 import com.xaqnus.my_tube_backend.comment.domain.Comment;
+import com.xaqnus.my_tube_backend.comment.dto.CommentCreateForm;
 import com.xaqnus.my_tube_backend.comment.dto.CommentDto;
 import com.xaqnus.my_tube_backend.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class CommentController {
     }
 
     @PostMapping("/{videoId}/{channelId}")
-    public void createComment(@PathVariable Long videoId, @PathVariable Long channelId, @RequestBody Comment comment) {
-        commentService.create(videoId, channelId, comment.getText());
+    public void createComment(@PathVariable Long videoId, @PathVariable Long channelId, @RequestBody CommentCreateForm commentCreateForm) {
+        commentService.create(videoId, channelId, commentCreateForm.getText());
     }
 }
