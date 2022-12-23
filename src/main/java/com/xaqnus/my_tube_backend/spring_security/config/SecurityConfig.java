@@ -41,15 +41,26 @@ public class SecurityConfig {
                         .and()
                         //권한설정
                         .authorizeRequests(authorize -> authorize
-                                .antMatchers("/api/v1/user/**")
+                                .antMatchers(HttpMethod.POST)
                                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-                                .antMatchers(HttpMethod.POST, "/api/v1/comment/**")
+                                .antMatchers(HttpMethod.PATCH)
+                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                                .antMatchers(HttpMethod.PUT)
+                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+//                                .antMatchers(HttpMethod.POST,"/api/v1/video/**")
+//                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+//                                .antMatchers(HttpMethod.POST,"/api/v1/comment/**")
+//                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+//                                .antMatchers(HttpMethod.POST,"/api/v1/subscribe/**")
+//                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                                .antMatchers("/api/v1/user/**")
                                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
                                 .antMatchers("/api/v1/manager/**")
                                 .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
                                 .antMatchers("/api/v1/admin/**")
                                 .access("hasRole('ROLE_ADMIN')")
                                 .anyRequest().permitAll()
+
                         )
                 .build();
     }

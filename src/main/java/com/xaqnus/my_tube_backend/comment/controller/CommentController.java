@@ -21,8 +21,9 @@ public class CommentController {
     }
 
     @PostMapping("/{videoId}/{channelId}")
-    public void createComment(@PathVariable Long videoId, @PathVariable Long channelId, CommentCreateForm commentCreateForm) {
-        System.out.println("CommentCreateForm: " + commentCreateForm.getText());
+    public void createComment(@PathVariable Long videoId, @PathVariable Long channelId, @RequestBody CommentCreateForm commentCreateForm) {
+//        System.out.println("CommentCreateForm: " + commentCreateForm.getText());
         commentService.create(videoId, channelId, commentCreateForm.getText());
+
     }
 }
