@@ -60,3 +60,5 @@ elasticsearch:
 redis:
   host: ${redis.host}
   port: ${redis.port}
+
+test:
