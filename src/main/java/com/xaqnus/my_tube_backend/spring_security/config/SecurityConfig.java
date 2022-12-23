@@ -41,12 +41,24 @@ public class SecurityConfig {
                         .and()
                         //권한설정
                         .authorizeRequests(authorize -> authorize
-                                .antMatchers(HttpMethod.POST)
+
+//                                        .antMatchers(HttpMethod.POST,"api/v1/join")
+//                                        .anonymous()
+//                                        .antMatchers(HttpMethod.POST,"api/v1/join")
+//                                        .permitAll()
+//                                .antMatchers(HttpMethod.POST)
+//                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                                .antMatchers(HttpMethod.POST, "/api/v1/video/**")
                                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                                        .antMatchers(HttpMethod.POST, "/api/v1/comment/**")
+                                        .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                                        .antMatchers(HttpMethod.POST, "/api/v1/subscribe/**")
+                                        .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
                                 .antMatchers(HttpMethod.PATCH)
                                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
                                 .antMatchers(HttpMethod.PUT)
                                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+
 //                                .antMatchers(HttpMethod.POST,"/api/v1/video/**")
 //                                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 //                                .antMatchers(HttpMethod.POST,"/api/v1/comment/**")
@@ -62,6 +74,7 @@ public class SecurityConfig {
                                 .anyRequest().permitAll()
 
                         )
+
                 .build();
     }
     public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
@@ -69,6 +82,7 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
+
                     .addFilter(corsConfig.corsFilter())
                     .addFilter(new JwtAuthenticationFilter(authenticationManager))
                     .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
